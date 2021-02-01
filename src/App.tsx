@@ -2,8 +2,11 @@ import React, { useRef } from 'react';
 import {
     CellClickedEvent,
     ColDef,
+    GetContextMenuItemsParams,
     GridApi,
+    GridOptions,
     GridReadyEvent,
+    MenuItemDef,
 } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-enterprise';
@@ -48,11 +51,27 @@ export const App = () => {
         },
     ];
 
-    const gridOptions = {
+    const getContextMenuItems = (
+        params: GetContextMenuItemsParams
+    ): (string | MenuItemDef)[] => {
+        const result: (string | MenuItemDef)[] = [
+            {
+                name: 'Buy ' + params.node.data.make,
+                action: function () {
+                    window.alert('Buying ' + params.node.data.make);
+                },
+            },
+        ];
+
+        return result;
+    };
+
+    const gridOptions: GridOptions = {
         domLayout: 'autoHeight',
         rowHeight: 46,
         suppressCellSelection: true,
         suppressContextMenu: true,
+        getContextMenuItems: getContextMenuItems,
     };
 
     const rowData = [
